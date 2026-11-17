@@ -135,6 +135,19 @@ ssh root@192.0.2.10 'journalctl --user -u serverwatch.service -n 30 --no-pager'
 
 自定义路径、端口或采样间隔时，优先使用脚本输出的命令；较长采样间隔需要相应的 `--max-age`。不带 `--state` 的 `watch` 会创建独立采集器，退出后停止；带 `--state` 的界面只读后台缓存。
 
+### 使用简短命令
+
+部署脚本不会自动修改 shell 启动文件。若 SSH 登录后输入 `serverwatch` 提示“未找到命令”，在**服务器当前终端**执行部署输出中的 `PATH (on target, current shell)` 命令，再运行 `serverwatch once`。完整路径的查看命令始终可用，后台服务也不依赖交互终端的 PATH。
+
+例如，默认前缀使用 `export PATH="$HOME/.local/bin:$PATH"`；若将 `INSTALL_PREFIX` 设为账号主目录下的 `.local/serverwatch`，则使用：
+
+```bash
+export PATH="$HOME/.local/serverwatch/bin:$PATH"
+serverwatch once
+```
+
+自定义其他安装前缀时，将上面的目录替换为实际 `INSTALL_PREFIX/bin`。要在以后 SSH 登录时生效，将对应的 `export PATH=...` 行加入该账号实际读取的登录 shell 启动文件：Bash 通常为 `~/.profile`；若已有 `~/.bash_profile` 或 `~/.bash_login`，应写入优先读取的文件。Zsh 使用 `~/.zprofile`。保存后重新登录；当前已打开的终端仍需执行一次上述 `export` 命令。直接执行 `ssh host 'command'` 通常不会读取这些登录配置，可继续使用程序完整路径。
+
 ## 重复部署、升级与恢复
 
 相同源码和配置再次执行且不带 `--upgrade` 时，脚本校验已安装文件、服务启用／运行状态和新鲜缓存，不重启正常运行的采集器。如果文件一致但服务状态不符合配置，脚本会报错并提示以 `--upgrade` 修复。源码或采样配置有变化时，同样需要明确使用 `--upgrade`：

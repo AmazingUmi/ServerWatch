@@ -432,6 +432,7 @@ class Installer:
         command = [str(self.binary), 'watch']
         if self.config['enable_service']:
             command += ['--state', str(self.state), '--max-age', format(self.max_age, '.15g')]
+        print('PATH (on target, current shell): export PATH=' + shlex.quote(str(self.binary.parent)) + ':"$PATH"')
         print('View (on target): ' + shlex.join(command))
         if self.config['enable_service']:
             print('Logs: journalctl --user -u ' + UNIT + ' -n 30 --no-pager')
