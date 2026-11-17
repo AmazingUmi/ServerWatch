@@ -24,6 +24,7 @@ def main() -> int:
     with tempfile.TemporaryDirectory(prefix="serverwatch-build-") as temporary:
         source = Path(temporary) / "app"
         source.mkdir()
+        shutil.copyfile(root / "LICENSE", source / "LICENSE")
         shutil.copytree(
             root / "serverwatch", source / "serverwatch",
             ignore=shutil.ignore_patterns("__pycache__", "*.pyc", "*.pyo"),

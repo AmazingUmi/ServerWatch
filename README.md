@@ -6,6 +6,33 @@ Python 3.10+，**零第三方 Python 运行依赖**。直接读取 Linux `/proc`
 
 从本地 Mac 通过 env 配置部署，见 **[部署脚本说明](docs/DEPLOYMENT.md)**；手动安装、日常查看、后台服务和卸载见 [安装与使用](docs/INSTALL.md)。已完成的 Linux 实机检查见 [验证记录](docs/VALIDATION.md)。
 
+## 界面预览
+
+以下图片使用当前 CLI 渲染器与虚构示例数据生成，不代表真实服务器的监控结果。
+
+![ServerWatch watch 主面板：CPU、内存、GPU 紧凑分区与近期任务排行](docs/images/watch-overview.png)
+
+<details>
+<summary>展开查看 CPU、内存、GPU 和最近任务详情</summary>
+
+**CPU**
+
+![CPU 详情：使用率、负载、逐核状态与进程排行](docs/images/watch-cpu.png)
+
+**内存**
+
+![内存详情：RAM、可用内存、Swap 与进程 RSS 排行](docs/images/watch-memory.png)
+
+**GPU**
+
+![GPU 详情：利用率、显存、温度、功率与计算进程](docs/images/watch-gpu.png)
+
+**最近任务**
+
+![最近任务详情：窗口内 CPU 时间、平均占用与内存峰值](docs/images/watch-tasks.png)
+
+</details>
+
 ## 快速开始
 
 沿用 JobFlow 的 env 配置方式，从本机部署：
@@ -162,3 +189,7 @@ python3 scripts/benchmark.py --processes 1000
 `benchmark.py` 使用本地普通文件模拟进程，测量采集器和滚动统计的耗时及进程峰值 RSS，用于本机回归比较。它不包含 GPU 查询、终端绘制或状态文件写入，结果不能代替真实 Linux 服务器的开销测量。默认模拟 60 秒窗口、2 秒间隔，先填满统计窗口，再测量 40 次采样，不实际等待采样间隔。
 
 指标接口参考：[Linux `/proc`](https://www.kernel.org/doc/html/latest/filesystems/proc.html)、[NVIDIA `nvidia-smi`](https://docs.nvidia.com/deploy/nvidia-smi/index.html)、[AMD GPU 状态接口](https://docs.kernel.org/gpu/amdgpu/thermal.html)。
+
+## 许可证
+
+[MIT License](LICENSE) · Copyright (c) 2026 AmazingUmi。单文件构建产物包含同一许可证。
