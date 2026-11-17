@@ -1,0 +1,29 @@
+name: Test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Unit tests
+        run: python3 -B -m unittest discover -s tests -v
+      - name: Real Linux snapshot
+        run: |
+          python3 -m serverwatch once --gpu none --interval 0.1 --json > /tmp/serverwatch-snapshot.json
+          python3 -c 'import json; x=json.load(open("/tmp/serverwatch-snapshot.json")); assert x["sample_seconds"] > 0; assert x["memory"]["total_bytes"] > 0; assert x["cpu"]["logical_cores"] >= 1; assert 0 <= x["cpu"]["used_percent"] <= 100; assert x["process_count"] >= 1'
+      - name: Single-file installation
+        run: |
+          sh scripts/install.sh --prefix "$RUNNER_TEMP/Server Watch & test"
+          "$RUNNER_TEMP/Server Watch & test/bin/serverwatch" --help
+          "$RUNNER_TEMP/Server Watch & test/bin/serverwatch" once --gpu none --interval 0.1 --json > /tmp/serverwatch-installed.json
+          python3 -c 'import json; x=json.load(open("/tmp/serverwatch-installed.json")); assert isinstance(x, dict) and x'

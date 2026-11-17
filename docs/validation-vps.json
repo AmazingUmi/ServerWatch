@@ -1,0 +1,16 @@
+{
+  "elapsed_seconds": 62.0,
+  "sampler_cpu_seconds": 0.4,
+  "one_core_percent": 0.645,
+  "memory": {
+    "VmHWM": "20188 kB",
+    "VmRSS": "20188 kB"
+  },
+  "visible_processes": 136,
+  "cores": 4,
+  "gpu_devices": 0,
+  "observed_seconds": 60.0,
+  "state_bytes": 4362,
+  "state_mode": "0o600",
+  "warnings": []
+}

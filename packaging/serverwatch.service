@@ -1,0 +1,16 @@
+[Unit]
+Description=ServerWatch lightweight server resource monitor
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/serverwatch serve --state %t/serverwatch/status.json
+Restart=on-failure
+RestartSec=3
+RuntimeDirectory=serverwatch
+RuntimeDirectoryMode=0700
+UMask=0077
+Nice=10
+NoNewPrivileges=yes
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+.venv/
+dist/
+.coverage
+.DS_Store
+status.json
+scripts/*.env
+scripts/*.env.local
